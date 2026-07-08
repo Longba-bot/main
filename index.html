@@ -185,7 +185,7 @@
   /* FEATURE GRID */
   .grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
     gap:22px;
     margin-bottom:90px;
   }
@@ -245,6 +245,7 @@
   .icon.econ{background:linear-gradient(135deg,#ffd88f,#ffb15f);}
   .icon.casino{background:linear-gradient(135deg,#ff9fc0,#ff6f9c);}
   .icon.social{background:linear-gradient(135deg,#b28fff,#8a5fff);}
+  .icon.vice{background:linear-gradient(135deg,#c9c9d6,#7d8298);}
   .icon.ui{background:linear-gradient(135deg,#7ff0c9,#37cfa0);}
 
   /* BOTTOM CTA */
@@ -297,14 +298,14 @@
       <div class="dot">🎧</div>
       longbalong
     </div>
-    <a class="invite-btn" href="#invite">Add to Discord</a>
+    <a class="invite-btn" href="https://discord.com/oauth2/authorize?client_id=1491110943873044640" target="_blank" rel="noopener">Add to Discord</a>
   </nav>
 
   <section class="hero">
     <div class="eyebrow">✨ All-in-one Discord Bot</div>
     <h1>Music, Economy &amp;<br>Games — All in One</h1>
-    <p>longbalong brings high-quality music, a full economy system, and a casino floor's worth of games into your Discord server — wrapped in a clean, modern experience.</p>
-    <a class="hero-cta" href="#invite">🎉 Invite longbalong</a>
+    <p>longbalong brings smooth music playback, a full coin economy, a black-market underworld, and a casino floor's worth of games into your Discord server — wrapped in a clean, modern experience.</p>
+    <a class="hero-cta" href="https://discord.com/oauth2/authorize?client_id=1491110943873044640" target="_blank" rel="noopener">🎉 Invite longbalong</a>
   </section>
 
   <div class="section-label">Features</div>
@@ -315,23 +316,24 @@
     <div class="card">
       <div class="icon music">🎶</div>
       <h3>Music</h3>
-      <p>Play songs straight from Spotify and YouTube with <strong>/play</strong>.</p>
+      <p>Smooth, Lavalink-powered playback.</p>
       <ul>
-        <li>Queue management &amp; now-playing info</li>
-        <li>Smooth Lavalink-powered audio</li>
-        <li>Auto server-hopping for large communities</li>
+        <li><strong>/play</strong> — search by song name or paste a Spotify link</li>
+        <li>Audio streamed live, no direct YouTube links needed</li>
+        <li>In-player controls: Skip, Shuffle, Loop &amp; Stop</li>
       </ul>
     </div>
 
     <div class="card">
       <div class="icon econ">💰</div>
       <h3>Economy</h3>
-      <p>Earn, trade, and grow your in-server wealth.</p>
+      <p>Earn, check, and grow your coin balance.</p>
       <ul>
-        <li>Earn coins with <strong>/daily</strong> and <strong>/rewards</strong></li>
-        <li>Trade, sell &amp; craft with <strong>/shop</strong>, <strong>/sell</strong>, <strong>/craft</strong></li>
-        <li>Check stats via <strong>/profile</strong> &amp; <strong>/leaderboard</strong></li>
-        <li>Send coins or items with <strong>/give</strong></li>
+        <li><strong>/daily</strong> — claim 5,000 free Coins every day</li>
+        <li><strong>/rewards</strong> — complete tasks for free Gifts</li>
+        <li><strong>/coins</strong> &amp; <strong>/profile</strong> — check your stats</li>
+        <li><strong>/leaderboard</strong> — see the richest players</li>
+        <li><strong>/shop</strong> &amp; <strong>/give</strong> — spend or send to friends</li>
       </ul>
     </div>
 
@@ -340,32 +342,43 @@
       <h3>Casino &amp; Mini-Games</h3>
       <p>A full casino floor, right inside your server.</p>
       <ul>
-        <li><strong>Blackjack</strong> — classic 21 with a sleek card table</li>
-        <li><strong>Mines</strong> — risk it for higher multipliers</li>
-        <li><strong>Coinflip</strong> &amp; <strong>Color Game</strong> — quick bets, instant results</li>
-        <li><strong>Cockfight</strong> &amp; <strong>Rob</strong> — PvP-style gambling and heists</li>
+        <li><strong>/blackjack</strong> — classic 21, max 50,000 bet</li>
+        <li><strong>/mines</strong> &amp; <strong>/baccarat</strong> — cash out before you bust</li>
+        <li><strong>/colorgame</strong> &amp; <strong>/coinflip</strong> — quick bets, instant results</li>
+        <li><strong>/cockfight</strong> — pit your chicken against another</li>
+        <li><strong>/rob</strong> — attempt to steal Coins from someone else</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="icon vice">🕶️</div>
+      <h3>Black Market</h3>
+      <p>An underworld economy on the side.</p>
+      <ul>
+        <li><strong>/craft</strong> — craft illegal items (needs an AK, mask &amp; bag)</li>
+        <li><strong>/sell</strong> &amp; <strong>/use</strong> — move or use black-market goods</li>
+        <li><strong>/smoke</strong> — light up a cig for a bit of aura</li>
       </ul>
     </div>
 
     <div class="card">
       <div class="icon social">💞</div>
       <h3>Social &amp; Pets</h3>
-      <p>Build relationships and raise a companion.</p>
+      <p>Build relationships and mess with friends.</p>
       <ul>
         <li><strong>/marry</strong> &amp; <strong>/divorce</strong> — connect with server friends</li>
-        <li><strong>/pet</strong> — adopt, feed, and grow your companion</li>
-        <li>Rich profile cards to show off your progress</li>
+        <li><strong>/pet</strong> — summon one of 12 companions (cat, fox, kitsune, owl &amp; more) to use on yourself or someone else</li>
       </ul>
     </div>
 
     <div class="card">
       <div class="icon ui">⚡</div>
-      <h3>Why longbalong?</h3>
-      <p>Built to feel fast, clean, and alive.</p>
+      <h3>Utility</h3>
+      <p>The essentials, always within reach.</p>
       <ul>
-        <li>Fast, responsive slash commands</li>
-        <li>Clean, modern UI with buttons, embeds &amp; menus</li>
-        <li>Actively maintained and growing</li>
+        <li><strong>/help</strong> — view every available command</li>
+        <li><strong>/serverhop</strong> — browse other servers the bot is in</li>
+        <li>Fast, responsive slash commands throughout</li>
       </ul>
     </div>
 
@@ -374,7 +387,7 @@
   <div class="cta-panel" id="invite">
     <h2>Turn your server into a hub 🎉</h2>
     <p>Music, games, and community — all in one bot. Get started in seconds.</p>
-    <a class="hero-cta" href="#">🎉 Invite longbalong</a>
+    <a class="hero-cta" href="https://discord.com/oauth2/authorize?client_id=1491110943873044640" target="_blank" rel="noopener">🎉 Invite longbalong</a>
   </div>
 
   <footer>longbalong · Not affiliated with Discord Inc.</footer>
