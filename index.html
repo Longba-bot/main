@@ -4,67 +4,66 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>longbalong — Music, Economy & Games Bot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg1:#eef4ff;
-    --bg2:#f6eeff;
-    --bg3:#eafcf6;
-    --glass: rgba(255,255,255,0.55);
-    --glass-strong: rgba(255,255,255,0.72);
-    --glass-border: rgba(255,255,255,0.9);
-    --ink:#1c2130;
-    --ink-soft:#5b6274;
-    --accent:#4f7bff;
-    --accent2:#a06bff;
-    --accent3:#37cfa0;
-    --shadow: 0 8px 32px rgba(80,100,160,0.14);
+    --bg:#0a0b0f;
+    --surface:#12141b;
+    --surface-2:#171a23;
+    --border:#242732;
+    --border-hover:#33384a;
+    --ink:#eef0f6;
+    --ink-dim:#9297a8;
+    --ink-faint:#5c6070;
+    --accent:#8b7bff;
+    --accent-bright:#a99cff;
+    --lime:#c8ff5c;
+    --coin:#ffc857;
+    --rose:#ff7a9e;
+    --mono: 'JetBrains Mono', monospace;
+    --display: 'Space Grotesk', sans-serif;
+    --body: 'Inter', sans-serif;
   }
 
   *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
   body{
-    font-family:-apple-system, "SF Pro Display", "SF Pro Text", "Inter", system-ui, sans-serif;
+    margin:0;
+    background:var(--bg);
     color:var(--ink);
-    background:
-      radial-gradient(circle at 15% 10%, #dbe8ff 0%, transparent 45%),
-      radial-gradient(circle at 85% 15%, #f0e2ff 0%, transparent 45%),
-      radial-gradient(circle at 30% 85%, #d9fbef 0%, transparent 45%),
-      radial-gradient(circle at 90% 90%, #ffe9f2 0%, transparent 45%),
-      linear-gradient(160deg, var(--bg1), var(--bg2) 55%, var(--bg3));
-    background-attachment: fixed;
-    min-height:100vh;
-    overflow-x:hidden;
+    font-family:var(--body);
+    -webkit-font-smoothing:antialiased;
   }
 
-  /* ambient floating blobs */
-  .blob{
+  /* dot-grid backdrop */
+  .grid-bg{
     position:fixed;
-    border-radius:50%;
-    filter: blur(60px);
-    opacity:0.5;
+    inset:0;
+    background-image: radial-gradient(circle, #1c2030 1px, transparent 1px);
+    background-size: 28px 28px;
+    mask-image: radial-gradient(circle at 50% 0%, black, transparent 75%);
+    -webkit-mask-image: radial-gradient(circle at 50% 0%, black, transparent 75%);
     z-index:0;
     pointer-events:none;
-    animation: float 14s ease-in-out infinite;
   }
-  .blob.b1{width:340px;height:340px;background:#a9c8ff;top:-100px;left:-80px;animation-delay:0s;}
-  .blob.b2{width:280px;height:280px;background:#e3b8ff;top:20%;right:-100px;animation-delay:3s;}
-  .blob.b3{width:300px;height:300px;background:#a9f2d6;bottom:-120px;left:20%;animation-delay:6s;}
-
-  @keyframes float{
-    0%,100%{transform:translateY(0) translateX(0);}
-    50%{transform:translateY(-30px) translateX(20px);}
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    .blob{animation:none;}
+  .glow{
+    position:fixed;
+    top:-200px; left:50%;
+    transform:translateX(-50%);
+    width:900px; height:600px;
+    background:radial-gradient(ellipse at center, rgba(139,123,255,0.18), transparent 70%);
+    z-index:0;
+    pointer-events:none;
   }
 
   .wrap{
     position:relative;
     z-index:1;
-    max-width:1080px;
+    max-width:1120px;
     margin:0 auto;
-    padding:64px 24px 100px;
+    padding:0 24px;
   }
 
   /* NAV */
@@ -72,325 +71,438 @@
     display:flex;
     align-items:center;
     justify-content:space-between;
-    padding:14px 22px;
-    background:var(--glass);
-    backdrop-filter: blur(20px) saturate(160%);
-    -webkit-backdrop-filter: blur(20px) saturate(160%);
-    border:1px solid var(--glass-border);
-    border-radius:22px;
-    box-shadow:var(--shadow);
-    margin-bottom:70px;
+    padding:22px 0;
   }
   .brand{
     display:flex;
     align-items:center;
     gap:10px;
+    font-family:var(--display);
     font-weight:700;
-    font-size:17px;
+    font-size:18px;
     letter-spacing:-0.01em;
   }
-  .brand .dot{
-    width:34px;height:34px;border-radius:10px;
-    background:linear-gradient(135deg,var(--accent),var(--accent2));
+  .brand .mark{
+    width:36px;height:36px;
+    border-radius:9px;
+    background:linear-gradient(155deg, var(--accent), #5b4fd6);
     display:flex;align-items:center;justify-content:center;
-    font-size:17px;
-    box-shadow:0 4px 14px rgba(90,110,255,0.35);
+    box-shadow:0 0 0 1px rgba(255,255,255,0.08) inset;
   }
-  nav .invite-btn{
-    padding:10px 20px;
-    border-radius:14px;
-    background:linear-gradient(135deg,var(--accent),var(--accent2));
-    color:white;
-    font-weight:600;
-    font-size:14px;
-    text-decoration:none;
-    box-shadow:0 6px 18px rgba(90,110,255,0.35);
-    transition:transform .2s ease, box-shadow .2s ease;
-  }
-  nav .invite-btn:hover{transform:translateY(-2px); box-shadow:0 10px 24px rgba(90,110,255,0.45);}
+  .brand .mark svg{width:19px;height:19px;stroke:#fff;}
 
-  /* HERO */
-  .hero{
-    text-align:center;
-    margin-bottom:80px;
-  }
-  .eyebrow{
+  .btn{
     display:inline-flex;
     align-items:center;
     gap:8px;
-    padding:8px 16px;
-    border-radius:100px;
-    background:var(--glass-strong);
-    backdrop-filter: blur(16px);
-    border:1px solid var(--glass-border);
-    font-size:13px;
+    font-family:var(--body);
     font-weight:600;
-    color:var(--ink-soft);
-    box-shadow:var(--shadow);
-    margin-bottom:28px;
+    font-size:14px;
+    text-decoration:none;
+    cursor:pointer;
+    border:none;
+    transition:transform .18s ease, border-color .18s ease, background .18s ease;
   }
-  h1{
-    font-size:clamp(38px, 6vw, 64px);
-    line-height:1.05;
-    letter-spacing:-0.03em;
-    font-weight:800;
-    margin:0 0 20px;
-    background:linear-gradient(135deg, var(--ink) 30%, var(--accent) 75%, var(--accent2) 100%);
-    -webkit-background-clip:text;
-    background-clip:text;
-    -webkit-text-fill-color:transparent;
+  .btn-primary{
+    padding:11px 20px;
+    border-radius:10px;
+    background:var(--accent);
+    color:#0a0b0f;
+    box-shadow:0 0 0 1px rgba(255,255,255,0.06) inset, 0 8px 24px rgba(139,123,255,0.25);
   }
-  .hero p{
-    max-width:600px;
-    margin:0 auto 34px;
-    font-size:18px;
-    line-height:1.6;
-    color:var(--ink-soft);
+  .btn-primary:hover{transform:translateY(-1px); background:var(--accent-bright);}
+  .btn-primary svg{width:16px;height:16px;stroke:#0a0b0f;}
+
+  .btn-lg{
+    padding:16px 30px;
+    border-radius:12px;
+    font-size:15.5px;
   }
-  .hero-cta{
+
+  /* HERO */
+  .hero{
+    padding:96px 0 90px;
+    text-align:center;
+  }
+  .tag{
     display:inline-flex;
     align-items:center;
-    gap:10px;
-    padding:16px 34px;
-    border-radius:18px;
-    background:linear-gradient(135deg,var(--accent),var(--accent2));
-    color:white;
-    font-weight:700;
-    font-size:16px;
-    text-decoration:none;
-    box-shadow:0 12px 32px rgba(90,110,255,0.4);
-    transition:transform .25s ease, box-shadow .25s ease;
+    gap:8px;
+    padding:7px 14px;
+    border-radius:100px;
+    border:1px solid var(--border);
+    background:var(--surface);
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:var(--ink-dim);
+    margin-bottom:30px;
   }
-  .hero-cta:hover{transform:translateY(-3px) scale(1.02); box-shadow:0 16px 40px rgba(90,110,255,0.5);}
-
-  /* SECTION LABEL */
-  .section-label{
-    text-align:center;
-    font-size:13px;
+  .tag .pulse{
+    width:7px;height:7px;border-radius:50%;
+    background:var(--lime);
+    box-shadow:0 0 8px var(--lime);
+  }
+  h1{
+    font-family:var(--display);
+    font-size:clamp(38px,6vw,60px);
+    line-height:1.06;
+    letter-spacing:-0.03em;
     font-weight:700;
+    margin:0 0 20px;
+  }
+  h1 .accent{color:var(--accent-bright);}
+  .hero p{
+    max-width:560px;
+    margin:0 auto 38px;
+    font-size:17px;
+    line-height:1.65;
+    color:var(--ink-dim);
+  }
+  .hero-actions{
+    display:flex;
+    justify-content:center;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+  .btn-ghost{
+    padding:16px 26px;
+    border-radius:12px;
+    border:1px solid var(--border);
+    background:transparent;
+    color:var(--ink);
+    font-size:15.5px;
+  }
+  .btn-ghost:hover{border-color:var(--border-hover); background:var(--surface);}
+
+  /* stat strip */
+  .stats{
+    display:flex;
+    justify-content:center;
+    gap:0;
+    margin-top:64px;
+    border-top:1px solid var(--border);
+    border-bottom:1px solid var(--border);
+  }
+  .stat{
+    flex:1;
+    max-width:180px;
+    padding:20px 10px;
+    text-align:center;
+    border-left:1px solid var(--border);
+  }
+  .stat:first-child{border-left:none;}
+  .stat b{
+    display:block;
+    font-family:var(--display);
+    font-size:22px;
+    color:var(--ink);
+  }
+  .stat span{
+    font-size:12px;
+    color:var(--ink-faint);
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+  }
+
+  /* SECTION HEAD */
+  .section{padding:80px 0;}
+  .section-head{
+    text-align:center;
+    margin-bottom:52px;
+  }
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:var(--accent-bright);
     letter-spacing:0.08em;
     text-transform:uppercase;
-    color:var(--accent);
-    margin-bottom:10px;
+    margin-bottom:12px;
   }
-  .section-title{
-    text-align:center;
-    font-size:clamp(26px,4vw,36px);
-    font-weight:800;
+  .section-head h2{
+    font-family:var(--display);
+    font-size:clamp(26px,4vw,34px);
+    font-weight:700;
     letter-spacing:-0.02em;
-    margin:0 0 50px;
-    color:var(--ink);
+    margin:0;
   }
 
   /* FEATURE GRID */
   .grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
-    gap:22px;
-    margin-bottom:90px;
-  }
-  .card{
-    position:relative;
-    padding:28px 26px;
-    border-radius:24px;
-    background:var(--glass);
-    backdrop-filter: blur(22px) saturate(160%);
-    -webkit-backdrop-filter: blur(22px) saturate(160%);
-    border:1px solid var(--glass-border);
-    box-shadow:var(--shadow);
-    transition:transform .3s ease, box-shadow .3s ease, background .3s ease;
+    grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
+    gap:1px;
+    background:var(--border);
+    border:1px solid var(--border);
+    border-radius:16px;
     overflow:hidden;
   }
-  .card::before{
-    content:"";
-    position:absolute;
-    top:0;left:0;right:0;
-    height:1px;
-    background:linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent);
+  .card{
+    background:var(--surface);
+    padding:30px 28px 26px;
+    transition:background .2s ease;
   }
-  .card:hover{
-    transform:translateY(-6px);
-    background:var(--glass-strong);
-    box-shadow:0 16px 40px rgba(90,110,255,0.2);
+  .card:hover{background:var(--surface-2);}
+  .card-top{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:16px;
   }
-  .card .icon{
-    width:52px;height:52px;
-    border-radius:16px;
+  .card-icon{
+    width:38px;height:38px;
+    border-radius:9px;
     display:flex;align-items:center;justify-content:center;
-    font-size:24px;
-    margin-bottom:18px;
-    box-shadow:0 6px 16px rgba(0,0,0,0.06);
+    flex-shrink:0;
   }
+  .card-icon svg{width:19px;height:19px;stroke-width:1.8;fill:none;}
   .card h3{
-    font-size:18px;
+    font-family:var(--display);
+    font-size:17px;
     font-weight:700;
-    margin:0 0 10px;
+    margin:0;
     letter-spacing:-0.01em;
   }
-  .card p{
-    font-size:14.5px;
-    line-height:1.6;
-    color:var(--ink-soft);
-    margin:0;
+  .card > p{
+    font-size:13.5px;
+    color:var(--ink-dim);
+    margin:0 0 18px;
+    line-height:1.55;
   }
-  .card ul{
-    margin:10px 0 0;
-    padding-left:18px;
-    color:var(--ink-soft);
-    font-size:14px;
-    line-height:1.7;
+  .cmd-list{
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+  }
+  .cmd{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    font-family:var(--mono);
+    font-size:12.5px;
+    line-height:1.5;
+  }
+  .cmd .path{
+    color:var(--accent-bright);
+    flex-shrink:0;
+  }
+  .cmd .desc{
+    color:var(--ink-faint);
   }
 
-  .icon.music{background:linear-gradient(135deg,#8fb4ff,#5f7fff);}
-  .icon.econ{background:linear-gradient(135deg,#ffd88f,#ffb15f);}
-  .icon.casino{background:linear-gradient(135deg,#ff9fc0,#ff6f9c);}
-  .icon.social{background:linear-gradient(135deg,#b28fff,#8a5fff);}
-  .icon.vice{background:linear-gradient(135deg,#c9c9d6,#7d8298);}
-  .icon.ui{background:linear-gradient(135deg,#7ff0c9,#37cfa0);}
+  .icon-music{background:rgba(139,123,255,0.14);} .icon-music svg{stroke:var(--accent-bright);}
+  .icon-coin{background:rgba(255,200,87,0.14);} .icon-coin svg{stroke:var(--coin);}
+  .icon-dice{background:rgba(255,122,158,0.14);} .icon-dice svg{stroke:var(--rose);}
+  .icon-mask{background:rgba(150,155,175,0.14);} .icon-mask svg{stroke:#b7bccb;}
+  .icon-heart{background:rgba(200,255,92,0.14);} .icon-heart svg{stroke:var(--lime);}
+  .icon-term{background:rgba(139,123,255,0.14);} .icon-term svg{stroke:var(--accent-bright);}
 
-  /* BOTTOM CTA */
-  .cta-panel{
+  /* CTA */
+  .cta{
     text-align:center;
-    padding:56px 30px;
-    border-radius:28px;
-    background:var(--glass-strong);
-    backdrop-filter: blur(24px) saturate(160%);
-    -webkit-backdrop-filter: blur(24px) saturate(160%);
-    border:1px solid var(--glass-border);
-    box-shadow:var(--shadow);
+    padding:70px 40px;
+    border-radius:20px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    position:relative;
+    overflow:hidden;
   }
-  .cta-panel h2{
+  .cta::before{
+    content:"";
+    position:absolute;
+    top:-60%; left:50%;
+    transform:translateX(-50%);
+    width:600px;height:400px;
+    background:radial-gradient(ellipse at center, rgba(139,123,255,0.16), transparent 70%);
+  }
+  .cta h2{
+    position:relative;
+    font-family:var(--display);
     font-size:clamp(24px,3.6vw,32px);
-    font-weight:800;
+    font-weight:700;
     margin:0 0 14px;
     letter-spacing:-0.02em;
   }
-  .cta-panel p{
-    color:var(--ink-soft);
-    margin:0 0 28px;
-    font-size:15.5px;
+  .cta p{
+    position:relative;
+    color:var(--ink-dim);
+    margin:0 0 30px;
+    font-size:15px;
   }
 
   footer{
     text-align:center;
-    margin-top:60px;
-    font-size:13px;
-    color:var(--ink-soft);
-    opacity:0.8;
+    padding:40px 0 60px;
+    font-size:12.5px;
+    color:var(--ink-faint);
+    font-family:var(--mono);
   }
 
   @media (max-width:640px){
-    nav{flex-wrap:wrap; gap:12px;}
-    .wrap{padding:40px 16px 70px;}
+    .stats{flex-wrap:wrap;}
+    .stat{flex:1 1 33%; max-width:none; border-left:none; border-top:1px solid var(--border);}
+    .stat:nth-child(3n+1){border-left:none;}
   }
 </style>
 </head>
 <body>
 
-<div class="blob b1"></div>
-<div class="blob b2"></div>
-<div class="blob b3"></div>
+<div class="grid-bg"></div>
+<div class="glow"></div>
 
 <div class="wrap">
 
   <nav>
     <div class="brand">
-      <div class="dot">🎧</div>
+      <div class="mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+      </div>
       longbalong
     </div>
-    <a class="invite-btn" href="https://discord.com/oauth2/authorize?client_id=1491110943873044640" target="_blank" rel="noopener">Add to Discord</a>
+    <a class="btn btn-primary" href="https://discord.com/oauth2/authorize?client_id=1491110943873044640" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+      Add to Discord
+    </a>
   </nav>
 
   <section class="hero">
-    <div class="eyebrow">✨ All-in-one Discord Bot</div>
-    <h1>Music, Economy &amp;<br>Games — All in One</h1>
-    <p>longbalong brings smooth music playback, a full coin economy, a black-market underworld, and a casino floor's worth of games into your Discord server — wrapped in a clean, modern experience.</p>
-    <a class="hero-cta" href="https://discord.com/oauth2/authorize?client_id=1491110943873044640" target="_blank" rel="noopener">🎉 Invite longbalong</a>
+    <div class="tag"><span class="pulse"></span> now serving music, coins &amp; chaos</div>
+    <h1>One bot for music,<br>the economy &amp; <span class="accent">the games.</span></h1>
+    <p>longbalong runs your server's soundtrack, its coin economy, and its casino floor — all through fast, clean slash commands.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary btn-lg" href="https://discord.com/oauth2/authorize?client_id=1491110943873044640" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        Invite longbalong
+      </a>
+      <a class="btn btn-ghost" href="#features">
+        See what it does
+      </a>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><b>7</b><span>Casino games</span></div>
+      <div class="stat"><b>12</b><span>Pets</span></div>
+      <div class="stat"><b>24</b><span>Slash commands</span></div>
+      <div class="stat"><b>1</b><span>Bot, no clutter</span></div>
+    </div>
   </section>
 
-  <div class="section-label">Features</div>
-  <h2 class="section-title">Everything your server needs</h2>
-
-  <div class="grid">
-
-    <div class="card">
-      <div class="icon music">🎶</div>
-      <h3>Music</h3>
-      <p>Smooth, Lavalink-powered playback.</p>
-      <ul>
-        <li><strong>/play</strong> — search by song name or paste a Spotify link</li>
-        <li>Audio streamed live, no direct YouTube links needed</li>
-        <li>In-player controls: Skip, Shuffle, Loop &amp; Stop</li>
-      </ul>
+  <section class="section" id="features">
+    <div class="section-head">
+      <div class="eyebrow">Commands</div>
+      <h2>Everything your server needs</h2>
     </div>
 
-    <div class="card">
-      <div class="icon econ">💰</div>
-      <h3>Economy</h3>
-      <p>Earn, check, and grow your coin balance.</p>
-      <ul>
-        <li><strong>/daily</strong> — claim 5,000 free Coins every day</li>
-        <li><strong>/rewards</strong> — complete tasks for free Gifts</li>
-        <li><strong>/coins</strong> &amp; <strong>/profile</strong> — check your stats</li>
-        <li><strong>/leaderboard</strong> — see the richest players</li>
-        <li><strong>/shop</strong> &amp; <strong>/give</strong> — spend or send to friends</li>
-      </ul>
+    <div class="grid">
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon icon-music">
+            <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+          </div>
+          <h3>Music</h3>
+        </div>
+        <p>Lavalink-powered playback, streamed straight into voice.</p>
+        <div class="cmd-list">
+          <div class="cmd"><span class="path">/play</span><span class="desc">search by name or paste a Spotify link</span></div>
+          <div class="cmd"><span class="path">skip · shuffle</span><span class="desc">in-player button controls</span></div>
+          <div class="cmd"><span class="path">loop · stop</span><span class="desc">in-player button controls</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon icon-coin">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 15.5c.6.7 1.5 1 2.5 1s2-.4 2.5-1c.6-.7.4-1.7-.5-2s-3-.3-3.5-1c-.5-.6-.2-1.5.6-1.9.8-.4 1.9-.2 2.6.4M12 7v1.5M12 15.5V17"/></svg>
+          </div>
+          <h3>Economy</h3>
+        </div>
+        <p>Earn Coins and track your standing.</p>
+        <div class="cmd-list">
+          <div class="cmd"><span class="path">/daily</span><span class="desc">claim 5,000 free Coins every day</span></div>
+          <div class="cmd"><span class="path">/rewards</span><span class="desc">complete tasks for free Gifts</span></div>
+          <div class="cmd"><span class="path">/coins · /profile</span><span class="desc">check balance and stats</span></div>
+          <div class="cmd"><span class="path">/leaderboard</span><span class="desc">see the richest players</span></div>
+          <div class="cmd"><span class="path">/shop · /give</span><span class="desc">spend Coins or send to a friend</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon icon-dice">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1" fill="currentColor" stroke="none"/><circle cx="15.5" cy="15.5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/></svg>
+          </div>
+          <h3>Casino &amp; Mini-Games</h3>
+        </div>
+        <p>A full casino floor, right inside your server.</p>
+        <div class="cmd-list">
+          <div class="cmd"><span class="path">/blackjack</span><span class="desc">classic 21, max 50,000 bet</span></div>
+          <div class="cmd"><span class="path">/mines · /baccarat</span><span class="desc">cash out before you bust</span></div>
+          <div class="cmd"><span class="path">/colorgame</span><span class="desc">bet on a color, roll the dice</span></div>
+          <div class="cmd"><span class="path">/coinflip</span><span class="desc">heads or tails, instant result</span></div>
+          <div class="cmd"><span class="path">/cockfight</span><span class="desc">pit your chicken against another</span></div>
+          <div class="cmd"><span class="path">/rob</span><span class="desc">attempt to steal Coins from someone</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon icon-mask">
+            <svg viewBox="0 0 24 24"><path d="M4 8c2-2 4-3 8-3s6 1 8 3c0 6-3 10-8 10S4 14 4 8Z"/><path d="M9 10.5c.7-1 2.3-1 3 0M12 10.5c.7-1 2.3-1 3 0"/></svg>
+          </div>
+          <h3>Black Market</h3>
+        </div>
+        <p>An underworld economy running on the side.</p>
+        <div class="cmd-list">
+          <div class="cmd"><span class="path">/craft</span><span class="desc">craft illegal items (needs an AK, mask &amp; bag)</span></div>
+          <div class="cmd"><span class="path">/sell · /use</span><span class="desc">move or use black-market goods</span></div>
+          <div class="cmd"><span class="path">/smoke</span><span class="desc">light up a cig for a bit of aura</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon icon-heart">
+            <svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9.5-9C.7 8.4 2 4.5 6 4c2-.2 4 1 6 3.5C14 5 16 3.8 18 4c4 .5 5.3 4.4 3.5 8-2.5 4.5-9.5 9-9.5 9Z"/></svg>
+          </div>
+          <h3>Social &amp; Pets</h3>
+        </div>
+        <p>Build relationships and mess with friends.</p>
+        <div class="cmd-list">
+          <div class="cmd"><span class="path">/marry · /divorce</span><span class="desc">connect with server friends</span></div>
+          <div class="cmd"><span class="path">/pet</span><span class="desc">summon 1 of 12 companions on yourself or someone else</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon icon-term">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="m7 9 3 3-3 3M13 15h4"/></svg>
+          </div>
+          <h3>Utility</h3>
+        </div>
+        <p>The essentials, always within reach.</p>
+        <div class="cmd-list">
+          <div class="cmd"><span class="path">/help</span><span class="desc">view every available command</span></div>
+          <div class="cmd"><span class="path">/serverhop</span><span class="desc">browse other servers the bot is in</span></div>
+          <div class="cmd"><span class="path">—</span><span class="desc">fast, responsive slash commands throughout</span></div>
+        </div>
+      </div>
+
     </div>
+  </section>
 
-    <div class="card">
-      <div class="icon casino">🎰</div>
-      <h3>Casino &amp; Mini-Games</h3>
-      <p>A full casino floor, right inside your server.</p>
-      <ul>
-        <li><strong>/blackjack</strong> — classic 21, max 50,000 bet</li>
-        <li><strong>/mines</strong> &amp; <strong>/baccarat</strong> — cash out before you bust</li>
-        <li><strong>/colorgame</strong> &amp; <strong>/coinflip</strong> — quick bets, instant results</li>
-        <li><strong>/cockfight</strong> — pit your chicken against another</li>
-        <li><strong>/rob</strong> — attempt to steal Coins from someone else</li>
-      </ul>
+  <section class="section" style="padding-top:0;">
+    <div class="cta">
+      <h2>Bring longbalong into your server</h2>
+      <p>Music, coins, and chaos — set up in seconds.</p>
+      <a class="btn btn-primary btn-lg" href="https://discord.com/oauth2/authorize?client_id=1491110943873044640" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        Invite longbalong
+      </a>
     </div>
+  </section>
 
-    <div class="card">
-      <div class="icon vice">🕶️</div>
-      <h3>Black Market</h3>
-      <p>An underworld economy on the side.</p>
-      <ul>
-        <li><strong>/craft</strong> — craft illegal items (needs an AK, mask &amp; bag)</li>
-        <li><strong>/sell</strong> &amp; <strong>/use</strong> — move or use black-market goods</li>
-        <li><strong>/smoke</strong> — light up a cig for a bit of aura</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="icon social">💞</div>
-      <h3>Social &amp; Pets</h3>
-      <p>Build relationships and mess with friends.</p>
-      <ul>
-        <li><strong>/marry</strong> &amp; <strong>/divorce</strong> — connect with server friends</li>
-        <li><strong>/pet</strong> — summon one of 12 companions (cat, fox, kitsune, owl &amp; more) to use on yourself or someone else</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="icon ui">⚡</div>
-      <h3>Utility</h3>
-      <p>The essentials, always within reach.</p>
-      <ul>
-        <li><strong>/help</strong> — view every available command</li>
-        <li><strong>/serverhop</strong> — browse other servers the bot is in</li>
-        <li>Fast, responsive slash commands throughout</li>
-      </ul>
-    </div>
-
-  </div>
-
-  <div class="cta-panel" id="invite">
-    <h2>Turn your server into a hub 🎉</h2>
-    <p>Music, games, and community — all in one bot. Get started in seconds.</p>
-    <a class="hero-cta" href="https://discord.com/oauth2/authorize?client_id=1491110943873044640" target="_blank" rel="noopener">🎉 Invite longbalong</a>
-  </div>
-
-  <footer>longbalong · Not affiliated with Discord Inc.</footer>
+  <footer>longbalong · not affiliated with Discord Inc.</footer>
 
 </div>
 
